@@ -6,18 +6,24 @@ using UsersService.Data;
 using UsersService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration;
 
-// Connection string from env or fallback
-var connectionString = configuration["CONNECTION_STRING"] ?? "Host=localhost;Port=5432;Database=usersdb;Username=myuser;Password=mypassword";
+// Forzar el puerto 80
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(80);
+});
+
+// CONEXIÓN FORZADA
+var connectionString = "Host=db;Port=5432;Database=usersdb;Username=myuser;Password=mypassword";
+
 builder.Services.AddDbContext<UsersDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
 
-// JWT config
-var jwtSecret = configuration["JWT_SECRET"] ?? throw new Exception("JWT_SECRET is required");
-var issuer = configuration["JWT_ISSUER"] ?? "users-service";
-var audience = configuration["JWT_AUDIENCE"] ?? "users-service-clients";
+// JWT config hardcodeado
+var jwtSecret = "eyJzZWNyZXRrZXkiOiJTdXBlclNlY3JldDEyMyEhQCMiLCJhbGciOiJIUzI1NiJ9";
+var issuer = "users-service";
+var audience = "users-service-clients";
 var keyBytes = Encoding.UTF8.GetBytes(jwtSecret);
 
 builder.Services.AddAuthentication(options =>
@@ -27,7 +33,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false; // dev only
+    options.RequireHttpsMetadata = false;
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -46,18 +52,20 @@ builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-
 var app = builder.Build();
 
-// Run migrations on startup (dev convenience)
+// Ejecutar migraciones y seed admin
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<UsersDbContext>();
+    
+    Console.WriteLine("Aplicando migraciones...");
     db.Database.Migrate();
+    Console.WriteLine("Migraciones aplicadas.");
 
-    // Seed admin if not exists (opcional)
     if (!db.Users.Any(u => u.Email == "admin@example.com"))
     {
+        Console.WriteLine("Creando usuario admin...");
         db.Users.Add(new UsersService.Models.User
         {
             Email = "admin@example.com",
@@ -65,14 +73,11 @@ using (var scope = app.Services.CreateScope())
             Role = "admin"
         });
         db.SaveChanges();
+        Console.WriteLine("Usuario admin creado.");
     }
 }
 
-
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersService/UsersService.csproj": {}
+    "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersServiceFull/UsersService/UsersService.csproj": {}
   },
   "projects": {
-    "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersService/UsersService.csproj": {
+    "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersServiceFull/UsersService/UsersService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersService/UsersService.csproj",
+        "projectUniqueName": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersServiceFull/UsersService/UsersService.csproj",
         "projectName": "UsersService",
-        "projectPath": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersService/UsersService.csproj",
+        "projectPath": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersServiceFull/UsersService/UsersService.csproj",
         "packagesPath": "/home/antoniocf/.nuget/packages/",
-        "outputPath": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersService/obj/",
+        "outputPath": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersServiceFull/UsersService/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/antoniocf/.nuget/NuGet/NuGet.Config"

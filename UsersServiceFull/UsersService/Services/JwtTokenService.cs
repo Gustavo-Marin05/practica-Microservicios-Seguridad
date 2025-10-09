@@ -2,7 +2,6 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace UsersService.Services
@@ -14,12 +13,13 @@ namespace UsersService.Services
         private readonly string _audience;
         private readonly int _expiresMinutes;
 
-        public JwtTokenService(IConfiguration configuration)
+        public JwtTokenService()
         {
-            _secret = configuration["JWT_SECRET"] ?? throw new ArgumentNullException("JWT_SECRET");
-            _issuer = configuration["JWT_ISSUER"] ?? "users-service";
-            _audience = configuration["JWT_AUDIENCE"] ?? "users-service-clients";
-            _expiresMinutes = int.TryParse(configuration["JWT_EXPIRES_IN_MINUTES"], out var m) ? m : 60;
+            // Hardcodeado para el lab - mismo secret que en Program.cs
+            _secret = "eyJzZWNyZXRrZXkiOiJTdXBlclNlY3JldDEyMyEhQCMiLCJhbGciOiJIUzI1NiJ9";
+            _issuer = "users-service";
+            _audience = "users-service-clients";
+            _expiresMinutes = 60;
         }
 
         public string GenerateToken(Guid userId, string role)
