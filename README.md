@@ -15,3 +15,15 @@ PUNTO 3
 ## Puerto
 
 El servicio corre en el puerto **5002**
+
+
+
+PUNTO 4
+
+## Servicio: Notificaciones (Node.js)
+- Carpeta: `servicio-notificaciones/`
+- Rol: consumir `payment.confirmed` desde RabbitMQ y enviar correos por SMTP (MailHog en laboratorio).
+- Levantar solo este servicio:
+  ```bash
+  cd servicio-notificaciones
+  docker compose up --build
