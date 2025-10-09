@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  servicio-compras:
+    build: .
+    ports:
+      - "5002:5002"
+    environment:
+      - FLASK_ENV=development
+    env_file:
+      - .env
+    depends_on:
+      - mysql-compras
+    networks:
+      - microservices-network
+
+  mysql-compras:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: compras_db
+      MYSQL_USER: compras_user
+      MYSQL_PASSWORD: compras_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_compras_data:/var/lib/mysql
+    networks:
+      - microservices-network
+
+volumes:
+  mysql_compras_data:
+
+networks:
+  microservices-network:
+    driver: bridge
