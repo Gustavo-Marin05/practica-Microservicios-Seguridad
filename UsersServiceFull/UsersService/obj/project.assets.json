@@ -3199,19 +3199,19 @@
     ]
   },
   "packageFolders": {
-    "/home/antoniocf/.nuget/packages/": {}
+    "C:\\Users\\Usuario\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersServiceFull/UsersService/UsersService.csproj",
+      "projectUniqueName": "F:\\practica-Microservicios-Seguridad\\UsersServiceFull\\UsersService\\UsersService.csproj",
       "projectName": "UsersService",
-      "projectPath": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersServiceFull/UsersService/UsersService.csproj",
-      "packagesPath": "/home/antoniocf/.nuget/packages/",
-      "outputPath": "/mnt/HDD/Documents/Ciencias de la Computacion/0Semestres/8voSemestre/Microservicios/grupal2/repositorio/practica-Microservicios-Seguridad/UsersServiceFull/UsersService/obj/",
+      "projectPath": "F:\\practica-Microservicios-Seguridad\\UsersServiceFull\\UsersService\\UsersService.csproj",
+      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+      "outputPath": "F:\\practica-Microservicios-Seguridad\\UsersServiceFull\\UsersService\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/antoniocf/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -3235,7 +3235,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.100"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net9.0": {
@@ -3275,12 +3275,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[9.0.8, 9.0.8]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -3289,7 +3283,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.109/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

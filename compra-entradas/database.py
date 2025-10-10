@@ -1,61 +1,85 @@
-import pymysql
-import os
-from dotenv import load_dotenv
+import mysql.connector
+from mysql.connector import Error
+from config import MYSQL_CONFIG
 
-load_dotenv()
+def get_db_connection():
+    """Obtener conexión a MySQL"""
+    try:
+        connection = mysql.connector.connect(**MYSQL_CONFIG)
+        print("✅ Conectado a MySQL")
+        return connection
+    except Error as e:
+        print(f"❌ Error conectando a MySQL: {e}")
+        return None
 
-class Database:
-    def __init__(self):
-        self.host = os.getenv('MYSQL_HOST')
-        self.user = os.getenv('MYSQL_USER')
-        self.password = os.getenv('MYSQL_PASSWORD')
-        self.database = os.getenv('MYSQL_DATABASE')
-        self.port = int(os.getenv('MYSQL_PORT', 3306))
-        self.connection = None
-
-    def get_connection(self):
-        if not self.connection or not self.connection.open:
-            self.connection = pymysql.connect(
-                host=self.host,
-                user=self.user,
-                password=self.password,
-                database=self.database,
-                port=self.port,
-                charset='utf8mb4',
-                cursorclass=pymysql.cursors.DictCursor
-            )
-        return self.connection
-
-    def init_db(self):
-        connection = self.get_connection()
-        with connection.cursor() as cursor:
-            # Tabla de compras
+def init_db():
+    """Crear base de datos y tabla si no existen"""
+    print("🔄 Inicializando base de datos...")
+    
+    connection = get_db_connection()
+    if not connection:
+        print("❌ No se pudo inicializar la base de datos - sin conexión")
+        return False
+    
+    cursor = connection.cursor()
+    
+    try:
+        # Crear base de datos si no existe
+        print("📁 Verificando/Creando base de datos...")
+        cursor.execute("CREATE DATABASE IF NOT EXISTS compras_db")
+        cursor.execute("USE compras_db")
+        print("✅ Base de datos compras_db verificada")
+        
+        # Verificar si la tabla existe
+        cursor.execute("SHOW TABLES LIKE 'compras'")
+        tabla_existe = cursor.fetchone()
+        
+        if tabla_existe:
+            print("✅ Tabla 'compras' ya existe")
+            # Verificar columnas existentes
+            cursor.execute("DESCRIBE compras")
+            columnas = [col[0] for col in cursor.fetchall()]
+            print(f"📊 Columnas existentes: {columnas}")
+            
+            # Definir todas las columnas necesarias
+            columnas_necesarias = {
+                'precio_unitario': "ALTER TABLE compras ADD COLUMN precio_unitario DECIMAL(10,2) NOT NULL DEFAULT 0",
+                'total': "ALTER TABLE compras ADD COLUMN total DECIMAL(10,2) NOT NULL DEFAULT 0",
+                'pagada': "ALTER TABLE compras ADD COLUMN pagada BOOLEAN DEFAULT FALSE",
+                'fecha_pago': "ALTER TABLE compras ADD COLUMN fecha_pago VARCHAR(100)"
+            }
+            
+            # Agregar columnas si no existen
+            for columna, query in columnas_necesarias.items():
+                if columna not in columnas:
+                    cursor.execute(query)
+                    print(f"✅ Columna '{columna}' agregada")
+                    
+        else:
+            # Crear tabla nueva con TODAS las columnas necesarias
+            print("🆕 Creando nueva tabla 'compras'...")
             cursor.execute('''
-                CREATE TABLE IF NOT EXISTS compras (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    usuario_id INT NOT NULL,
-                    evento_id INT NOT NULL,
-                    cantidad_entradas INT NOT NULL,
-                    total DECIMAL(10, 2) NOT NULL,
-                    estado ENUM('pendiente', 'pagada', 'cancelada') DEFAULT 'pendiente',
-                    fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                CREATE TABLE compras (
+                    id VARCHAR(36) PRIMARY KEY,
+                    evento_id VARCHAR(50) NOT NULL,
+                    cantidad INT NOT NULL,
+                    user_id VARCHAR(50),
+                    precio_unitario DECIMAL(10,2) NOT NULL,
+                    total DECIMAL(10,2) NOT NULL,
+                    pagada BOOLEAN DEFAULT FALSE,
+                    fecha_pago VARCHAR(100)
                 )
             ''')
-            
-            # Tabla de detalles de compra (para tracking)
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS compra_detalles (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    compra_id INT NOT NULL,
-                    evento_nombre VARCHAR(255) NOT NULL,
-                    evento_fecha DATETIME NOT NULL,
-                    evento_lugar VARCHAR(255) NOT NULL,
-                    precio_unitario DECIMAL(10, 2) NOT NULL,
-                    FOREIGN KEY (compra_id) REFERENCES compras(id) ON DELETE CASCADE
-                )
-            ''')
-            
-            connection.commit()
-
-db = Database()
+            print("✅ Tabla 'compras' creada con todas las columnas")
+        
+        connection.commit()
+        print("🎉 Estructura de la tabla verificada y actualizada correctamente")
+        return True
+        
+    except Error as e:
+        connection.rollback()
+        print(f"❌ Error inicializando BD: {e}")
+        return False
+    finally:
+        cursor.close()
+        connection.close()
