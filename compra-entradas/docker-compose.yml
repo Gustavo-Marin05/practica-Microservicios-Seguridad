@@ -1,36 +1,41 @@
-version: '3.9'
+version: '3.8'
 
 services:
-  servicio-compras:
+  compra-entradas:
     build: .
+    container_name: compra-entradas-app
     ports:
-      - "5002:5002"
+      - "4000:4000"
     environment:
-      - FLASK_ENV=development
-    env_file:
-      - .env
+      - MYSQL_HOST=mysql-compras
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=123456
+      - MYSQL_DATABASE=compras_db
+      - JWT_SECRET=eyJzZWNyZXRrZXkiOiJTdXBlclNlY3JldDEyMyEhQCMiLCJhbGciOiJIUzI1NiJ9
+      - JWT_ALGORITHM=HS256
+      - EVENTS_SERVICE_URL=http://node_app:3000/events
     depends_on:
       - mysql-compras
     networks:
-      - microservices-network
+      - eventosservice_default
 
   mysql-compras:
-    image: mysql:latest
+    image: mysql:8.0
+    container_name: mysql-compras
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: compras_db
-      MYSQL_USER: compras_user
-      MYSQL_PASSWORD: compras_pass
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=compras_db
     ports:
       - "3307:3306"
     volumes:
-      - mysql_compras_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     networks:
-      - microservices-network
+      - eventosservice_default
 
 volumes:
-  mysql_compras_data:
+  mysql_data:
 
 networks:
-  microservices-network:
-    driver: bridge
+  eventosservice_default:
+    external: true
