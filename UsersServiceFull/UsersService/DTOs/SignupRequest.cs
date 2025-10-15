@@ -9,6 +9,18 @@ namespace UsersService.DTOs
         public string Email { get; set; }
 
         [Required]
+        [MaxLength(100)]
+        public string Names { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Surnames { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [MinLength(6)]
         public string Password { get; set; }
 

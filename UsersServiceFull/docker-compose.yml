@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:15
-    restart: unless-stopped
+    restart: "no"
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
@@ -20,7 +20,7 @@ services:
     build:
       context: ./UsersService
       dockerfile: Dockerfile
-    restart: unless-stopped
+    restart: "no"
     environment:
       DB_HOST: db
       DB_PORT: 5432

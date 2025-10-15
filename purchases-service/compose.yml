@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: purchasesdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - purchases_network
+
+  purchases:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@db:5432/purchasesdb
+      - EVENTS_SERVICE_URL=http://events:3000
+      - USERS_SERVICE_URL=http://users:80
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - RABBITMQ_EXCHANGE=payments
+      - RABBITMQ_ROUTING_KEY=payment.confirmed
+      - JWT_SECRET=eyJzZWNrZXkiOiJTdXBlclNlY3JldDEyMyEhQCMiLCJhbGciOiJIUzI1NiJ9
+      - JWT_ALGORITHM=HS256
+    ports:
+      - "5001:5001"
+    depends_on:
+      - db
+    networks:
+      - purchases_network
+      - external_network
+
+networks:
+  purchases_network:
+    driver: bridge
+  external_network:
+    external: true
+
+volumes:
+  pgdata:

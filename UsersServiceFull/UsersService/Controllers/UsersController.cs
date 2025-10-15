@@ -21,7 +21,7 @@ namespace UsersService.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "user,admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAll()
         {
             var users = await _db.Users.Select(u => new UserDto(u.Id, u.Email, u.Role, u.CreatedAt)).ToListAsync();
@@ -38,7 +38,7 @@ namespace UsersService.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "user,admin")]
         public async Task<IActionResult> Update(Guid id, [FromBody] SignupRequest req)
         {
             var u = await _db.Users.FindAsync(id);
@@ -54,7 +54,7 @@ namespace UsersService.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "user,admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var u = await _db.Users.FindAsync(id);

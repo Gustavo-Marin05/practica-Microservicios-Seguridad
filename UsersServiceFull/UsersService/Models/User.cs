@@ -13,6 +13,18 @@ namespace UsersService.Models
         public string Email { get; set; }
 
         [Required]
+        [MaxLength(100)]
+        public string Names { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Surnames { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string PhoneNumber { get; set; }
+        
+        [Required]
         public string PasswordHash { get; set; }
 
         [Required]
