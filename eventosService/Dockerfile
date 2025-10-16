@@ -19,4 +19,5 @@ RUN npx prisma generate
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+# Apply migrations and start the server
+CMD npx prisma migrate deploy && npm run dev

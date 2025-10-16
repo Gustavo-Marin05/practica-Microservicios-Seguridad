@@ -1,3 +1,4 @@
+// DTOs/SignupRequest.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace UsersService.DTOs

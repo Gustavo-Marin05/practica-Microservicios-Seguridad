@@ -1,3 +1,4 @@
+// Controllers/AuthController.cs
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,9 @@ namespace UsersService.Controllers
             var user = new User
             {
                 Email = req.Email,
+                Names = req.Names,                    // ADD THIS
+                Surnames = req.Surnames,              // ADD THIS
+                PhoneNumber = req.PhoneNumber,        // ADD THIS
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.Password),
                 Role = string.IsNullOrWhiteSpace(req.Role) ? "user" : req.Role
             };
@@ -37,7 +41,7 @@ namespace UsersService.Controllers
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
-            var dto = new DTOs.UserDto(user.Id, user.Email, user.Role, user.CreatedAt);
+            var dto = new UserDto(user.Id, user.Email, user.Role, user.CreatedAt);
             return CreatedAtAction(nameof(Signin), new { id = user.Id }, dto);
         }
 

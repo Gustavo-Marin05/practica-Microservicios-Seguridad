@@ -26,7 +26,7 @@ services:
       - JWT_SECRET=eyJzZWNrZXkiOiJTdXBlclNlY3JldDEyMyEhQCMiLCJhbGciOiJIUzI1NiJ9
       - JWT_ALGORITHM=HS256
     ports:
-      - "5001:5001"
+      - "5000:5000"
     depends_on:
       - db
     networks:

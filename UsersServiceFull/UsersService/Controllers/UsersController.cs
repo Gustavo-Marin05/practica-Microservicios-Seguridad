@@ -1,3 +1,4 @@
+// Controllers/UsersController.cs
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,8 +46,13 @@ namespace UsersService.Controllers
             if (u == null) return NotFound();
 
             u.Email = req.Email ?? u.Email;
+            u.Names = req.Names ?? u.Names;                    // ADD THIS
+            u.Surnames = req.Surnames ?? u.Surnames;           // ADD THIS
+            u.PhoneNumber = req.PhoneNumber ?? u.PhoneNumber;  // ADD THIS
+            
             if (!string.IsNullOrWhiteSpace(req.Password))
                 u.PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.Password);
+            
             u.Role = string.IsNullOrWhiteSpace(req.Role) ? u.Role : req.Role;
 
             await _db.SaveChangesAsync();

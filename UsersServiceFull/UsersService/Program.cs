@@ -14,7 +14,7 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 // CONEXIÓN FORZADA
-var connectionString = "Host=db;Port=5432;Database=usersdb;Username=myuser;Password=mypassword";
+var connectionString = "Host=db-users;Port=5432;Database=usersdb;Username=myuser;Password=mypassword";
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
     options.UseNpgsql(connectionString)
@@ -69,6 +69,9 @@ using (var scope = app.Services.CreateScope())
         db.Users.Add(new UsersService.Models.User
         {
             Email = "admin@example.com",
+            Names = "System",                   
+            Surnames = "Administrator",          
+            PhoneNumber = "+1-555-0100",        
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
             Role = "admin"
         });
