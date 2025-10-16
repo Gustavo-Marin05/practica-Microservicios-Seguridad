@@ -69,5 +69,22 @@ namespace UsersService.Controllers
             await _db.SaveChangesAsync();
             return NoContent();
         }
+
+        [HttpGet("is-admin")]
+        [Authorize]
+        public async Task<IActionResult> IsAdmin()
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value 
+                        ?? User.FindFirst("sub")?.Value;
+            
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { message = "Token inválido" });
+
+            var user = await _db.Users.FindAsync(Guid.Parse(userId));
+            if (user == null) 
+                return NotFound(new { message = "Usuario no encontrado" });
+
+            return Ok(new { isAdmin = user.Role == "admin" });
+        }
     }
 }
